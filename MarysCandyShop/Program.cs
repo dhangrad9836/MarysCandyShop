@@ -3,14 +3,19 @@ using System.Collections.Generic;
 
 //save data to filesystem
 string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCandyShop\MarysCandyShop\history.txt";
-var divide = "---------------------------------";
+
 string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
 //Dictonary of products we will add the candynames here and have an index
 var products = new Dictionary<int, string>();
 
 //function call to SeedData to populate the products array
-SeedData();
+//SeedData();
+var divide = "---------------------------------";
 
+if (File.Exists(docPath))
+{
+    LoadData();
+}
 
 //set isMenuRunning to true if in the selection user chooses to quit
 //then the isMenuRunning will be false and it will break out of the code block
@@ -92,7 +97,7 @@ void AddProduct()
     Console.WriteLine("Product name:");
     var product = Console.ReadLine();
     var index = products.Count();
-    products.Add(index, product);
+    products.Add(index, product.Trim());
 }
 
 //use method GetMenu and store it inside a string
@@ -155,6 +160,27 @@ Todays profit: {todaysProfit}$
 Todays target achieved: {targetAchieved}
 {divide}
 {menu}");
+}
+
+void LoadData()
+{
+    //use StreamReader to read in a file called docPath
+    using (StreamReader reader = new(docPath))
+    {
+        //when each line is read from the StreamReader it will be stored inside the 'line' variable below
+        var line = reader.ReadLine();
+        
+
+        //while loop
+        while(line != null)
+        {
+            //after the line of data is stored inside 'line' we will use the Split method seperate out the data every time a comma is found it will be stored inside the parts array
+            string[] parts = line.Split(',');
+
+            products.Add(int.Parse(parts[0]), parts[1]);
+            line = reader.ReadLine();
+        }
+    }
 }
 
 
