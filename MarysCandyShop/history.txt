@@ -1,0 +1,10 @@
+0, Rainbow Lillipops
+1, Cotton Candy Clouds
+2, Choco-Caramel Delights
+3, Gummy Bear Bonanza
+4, Minty Chocolate Truffles
+5, Jellybean Jamroree
+6, Fruity Taffy Twists
+7, Sour Patch Surprise
+8, Crispy Peanut Butter Cups
+9, Rock Candy Crystals

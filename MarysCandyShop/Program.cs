@@ -1,6 +1,13 @@
-﻿string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
-//list of products we will add the candynames here
-var products = new List<string>();
+﻿//using statements
+using System.Collections.Generic;
+
+//save data to filesystem
+string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCandyShop\MarysCandyShop\history.txt";
+var divide = "---------------------------------";
+string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
+//Dictonary of products we will add the candynames here and have an index
+var products = new Dictionary<int, string>();
+
 //function call to SeedData to populate the products array
 SeedData();
 
@@ -36,6 +43,8 @@ while (isMenuRunning)
             //we change the menuMessage to "Goodbye" instead of go back to menu
             //as we are quitting the program here
             menuMessage = "Goodbue";
+            //call to SaveProducts() to save the data to file
+            SaveProducts();
             isMenuRunning = false;
             break;
         default:
@@ -56,7 +65,7 @@ void SeedData()
     //for loop to add the cand names to the products list
     for (int i = 0; i < candyNames.Length; i++)
     {
-        products.Add(candyNames[i]);
+        products.Add(i, candyNames[i]);
     }
 }
 void UpdateProduct(string message)
@@ -66,7 +75,11 @@ void UpdateProduct(string message)
 
 void ViewProduct(string message)
 {
-    Console.WriteLine(message);
+    Console.WriteLine(divide);
+    foreach (var product in products)
+    {
+        Console.WriteLine($"{product}");
+    }
 }
 
 void DeleteProduct(string message)
@@ -78,7 +91,8 @@ void AddProduct()
 {
     Console.WriteLine("Product name:");
     var product = Console.ReadLine();
-    products.Add(product);
+    var index = products.Count();
+    products.Add(index, product);
 }
 
 //use method GetMenu and store it inside a string
@@ -99,6 +113,25 @@ int GetDaysSinceOpening()
     TimeSpan timeDifference = DateTime.Now - openingDate;
 
     return timeDifference.Days;
+}
+
+//save data to file system
+void SaveProducts()
+{
+    //you will have to use the StreamWriter class in a using statement
+    using (StreamWriter outputFile = new StreamWriter(docPath))
+    {
+        //use foreach loop to loop through the products list and store it in the outputFile 
+        //note that we changed our foreach from a string to a var b/c we changed the List from string to a Dictionary which is now a key/value pair so the var picks up as a KeyValuePair, but we then changed to the actual data type KeyValuePair<int, string>
+        foreach (KeyValuePair<int, string> product in products)
+        {
+            //outputFile.WriteLine(product);
+            //here we will store the produce.key which is the index and the produce.value which is the candy string name
+            outputFile.WriteLine($"{product.Key}, {product.Value}");
+        }
+    }
+    //output that the products are saved when end of list is reached
+    Console.WriteLine("Products saved");
 }
 
 void PrintHeader()
