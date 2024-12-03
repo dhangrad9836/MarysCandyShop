@@ -1,6 +1,14 @@
-﻿//set isMenuRunning to true if in the selection user chooses to quit
+﻿string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
+//list of products we will add the candynames here
+var products = new List<string>();
+//function call to SeedData to populate the products array
+SeedData();
+
+
+//set isMenuRunning to true if in the selection user chooses to quit
 //then the isMenuRunning will be false and it will break out of the code block
 var isMenuRunning = true;
+
 
 while (isMenuRunning)
 {
@@ -13,7 +21,7 @@ while (isMenuRunning)
     switch (usersChoice)
     {
         case "A":
-            AddProduct("User chose A");
+            AddProduct();
             break;
         case "D":
             DeleteProduct("User chose D");
@@ -41,7 +49,16 @@ while (isMenuRunning)
 
 }
 
-
+//methods
+//manual entered data from the candyNames array to the seedData method
+void SeedData()
+{
+    //for loop to add the cand names to the products list
+    for (int i = 0; i < candyNames.Length; i++)
+    {
+        products.Add(candyNames[i]);
+    }
+}
 void UpdateProduct(string message)
 {
     Console.WriteLine(message);
@@ -57,14 +74,17 @@ void DeleteProduct(string message)
     Console.WriteLine(message);
 }
 
-void AddProduct(string message)
+void AddProduct()
 {
-    Console.WriteLine(message);
+    Console.WriteLine("Product name:");
+    var product = Console.ReadLine();
+    products.Add(product);
 }
 
 //use method GetMenu and store it inside a string
 string GetMenu()
 {
+    //return the string menu when it's called
     return "Choose one option:\n"
      + 'V' + " to view products\n"
      + 'A' + " to add products\n"
@@ -90,7 +110,7 @@ void PrintHeader()
     var daysSinceOpening = GetDaysSinceOpening();
     var todaysProfit = 5.5m;
     var targetAchieved = false;
-    var menu = GetMenu();
+    var menu = GetMenu();   //call to the GetMenu()
 
     //create a header for the candy shop
     //use string interpolation $ and verbatim strings @
@@ -103,6 +123,9 @@ Todays target achieved: {targetAchieved}
 {divide}
 {menu}");
 }
+
+
+
 
 
 Console.ReadLine();
