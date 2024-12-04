@@ -1,8 +1,18 @@
 ﻿//using statements
+using MarysCandyShop;
 using System.Collections.Generic;
 
+//Product object declaration
+Product product = new Product("Chocolate Cake");
+Product product2 = new Product("Caramel Cake");
+Product product3 = new Product("Gummy Bear");
+
+//print out product objects
+Console.WriteLine($"{product.Name}, {product2.Name}, {product3.Name}");
+
+
 //save data to filesystem
-string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCangdyShop\MarysCandyShop\history.txt";
+string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCandyShop\MarysCandyShop\history.txt";
 
 string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
 //Dictonary of products we will add the candynames here and have an index
@@ -131,7 +141,7 @@ void SaveProducts()
     try
     {
         //you will have to use the StreamWriter class in a using statement
-        using (StreamWriter outputFile = new StreamWriter(docPath))
+        using (StreamWriter outputFile = new StreamWriter(Configuration.docPath))
         {
             //use foreach loop to loop through the products list and store it in the outputFile 
             //note that we changed our foreach from a string to a var b/c we changed the List from string to a Dictionary which is now a key/value pair so the var picks up as a KeyValuePair, but we then changed to the actual data type KeyValuePair<int, string>
@@ -184,7 +194,7 @@ void LoadData()
     try
     {
         //use StreamReader to read in a file called docPath and store it in a variable called reader
-        using (StreamReader reader = new(docPath))
+        using (StreamReader reader = new(Configuration.docPath))
         {
             //when each line is read from the StreamReader it will be stored inside the 'line' variable below
             var line = reader.ReadLine();
