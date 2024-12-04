@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 
 //save data to filesystem
-string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCandyShop\MarysCandyShop\history.txt";
+string docPath = @"C:\Users\dhang\Desktop\c_repos\MarysCangdyShop\MarysCandyShop\history.txt";
 
 string[] candyNames = { "Rainbow Lillipops", "Cotton Candy Clouds", "Choco-Caramel Delights", "Gummy Bear Bonanza", "Minty Chocolate Truffles", "Jellybean Jamroree", "Fruity Taffy Twists", "Sour Patch Surprise", "Crispy Peanut Butter Cups", "Rock Candy Crystals" };
 //Dictonary of products we will add the candynames here and have an index
+//var products = new List<string>();
 var products = new Dictionary<int, string>();
 
-//function call to SeedData to populate the products array
+//function call to SeedData to populate the products array my 
+//we commented it out so we can run the LoadData() function which will read to the filesystem
 //SeedData();
 var divide = "---------------------------------";
 
-if (File.Exists(docPath))
-{
-    LoadData();
-}
+//if (File.Exists(docPath))
+//{
+//    LoadData();
+//}
+
+LoadData();
 
 //set isMenuRunning to true if in the selection user chooses to quit
 //then the isMenuRunning will be false and it will break out of the code block
@@ -123,20 +127,32 @@ int GetDaysSinceOpening()
 //save data to file system
 void SaveProducts()
 {
-    //you will have to use the StreamWriter class in a using statement
-    using (StreamWriter outputFile = new StreamWriter(docPath))
+    //try/catch
+    try
     {
-        //use foreach loop to loop through the products list and store it in the outputFile 
-        //note that we changed our foreach from a string to a var b/c we changed the List from string to a Dictionary which is now a key/value pair so the var picks up as a KeyValuePair, but we then changed to the actual data type KeyValuePair<int, string>
-        foreach (KeyValuePair<int, string> product in products)
+        //you will have to use the StreamWriter class in a using statement
+        using (StreamWriter outputFile = new StreamWriter(docPath))
         {
-            //outputFile.WriteLine(product);
-            //here we will store the produce.key which is the index and the produce.value which is the candy string name
-            outputFile.WriteLine($"{product.Key}, {product.Value}");
+            //use foreach loop to loop through the products list and store it in the outputFile 
+            //note that we changed our foreach from a string to a var b/c we changed the List from string to a Dictionary which is now a key/value pair so the var picks up as a KeyValuePair, but we then changed to the actual data type KeyValuePair<int, string>
+            foreach (KeyValuePair<int, string> product in products)
+            {
+                //outputFile.WriteLine(product);
+                //here we will store the produce.key which is the index and the produce.value which is the candy string name
+                outputFile.WriteLine($"{product.Key}, {product.Value}");
+            }
         }
+        //output that the products are saved when end of list is reached
+        Console.WriteLine("Products saved");
     }
-    //output that the products are saved when end of list is reached
-    Console.WriteLine("Products saved");
+    catch (Exception ex)
+    {
+
+        Console.WriteLine("There was an error saving products:" + ex.Message);
+        Console.WriteLine(divide);
+    }
+
+    
 }
 
 void PrintHeader()
@@ -164,23 +180,36 @@ Todays target achieved: {targetAchieved}
 
 void LoadData()
 {
-    //use StreamReader to read in a file called docPath
-    using (StreamReader reader = new(docPath))
+    //try/catch block
+    try
     {
-        //when each line is read from the StreamReader it will be stored inside the 'line' variable below
-        var line = reader.ReadLine();
-        
-
-        //while loop
-        while(line != null)
+        //use StreamReader to read in a file called docPath and store it in a variable called reader
+        using (StreamReader reader = new(docPath))
         {
-            //after the line of data is stored inside 'line' we will use the Split method seperate out the data every time a comma is found it will be stored inside the parts array
-            string[] parts = line.Split(',');
+            //when each line is read from the StreamReader it will be stored inside the 'line' variable below
+            var line = reader.ReadLine();
 
-            products.Add(int.Parse(parts[0]), parts[1]);
-            line = reader.ReadLine();
+
+            //while loop
+            while (line != null)
+            {
+                //after the line of data is stored inside 'line' we will use the Split method seperate out the data every time a comma is found it will be stored inside the parts array
+                string[] parts = line.Split(',');
+
+                //we need to parse the first parts[0] to an integer as that is the index number which is an int
+                products.Add(int.Parse(parts[0]), parts[1]);
+                line = reader.ReadLine();
+            }
         }
     }
+    catch (Exception ex)
+    {
+
+        Console.WriteLine(ex.Message);
+        Console.WriteLine(divide);
+    }
+
+    
 }
 
 
