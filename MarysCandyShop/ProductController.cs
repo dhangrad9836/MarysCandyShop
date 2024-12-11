@@ -8,34 +8,18 @@ namespace MarysCandyShop
 {
     internal class ProductController
     {
-        //we made accessiblity to 'internal' so it's not viewed as private but internal so it's accessible to other parts
-        internal void DeleteProduct(string message)
+        internal List<string> GetProduct()
         {
-            Console.WriteLine(message);
-        }
+            //we initialize an empty list to hold our list of candy
+            var products = new List<string>();
 
-        internal void AddProduct()
-        {
-            Console.WriteLine("Product name:");
-            var product = Console.ReadLine();
-            var index = products.Count();
-            products.Add(index, product.Trim());
-        }
-
-        internal void UpdateProduct(string message)
-        {
-            Console.WriteLine(message);
-        }
-
-        void LoadData()
-        {
             //try/catch block
             try
             {
                 //use StreamReader to read in a file called docPath and store it in a variable called reader
                 using (StreamReader reader = new(Configuration.docPath))
                 {
-                    //when each line is read from the StreamReader it will be stored inside the 'line' variable below
+                    //when each line is read from the StreamReader in the text file of products.txt it will be stored inside the 'line' variable below
                     var line = reader.ReadLine();
 
 
@@ -46,7 +30,9 @@ namespace MarysCandyShop
                         string[] parts = line.Split(',');
 
                         //we need to parse the first parts[0] to an integer as that is the index number which is an int
-                        products.Add(int.Parse(parts[0]), parts[1]);
+                        //products.Add(int.Parse(parts[0]), parts[1]);
+                        //line is a product from the text file that we use in our docpath of products.txt
+                        products.Add(line);
                         line = reader.ReadLine();
                     }
                 }
@@ -55,11 +41,51 @@ namespace MarysCandyShop
             {
 
                 Console.WriteLine(ex.Message);
-                Console.WriteLine(divide);
+                Console.WriteLine(UserInterface.divide);
             }
 
-
+            return products;
         }
+
+        //we made accessiblity to 'internal' so it's not viewed as private but internal so it's accessible to other parts
+        internal void DeleteProduct(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        internal void AddProduct()
+        {
+            //user enter input of product name
+            Console.WriteLine("Product name:");
+            var product = Console.ReadLine();
+            //try/catch
+            try
+            {
+                //you will have to use the StreamWriter class in a using statement
+                using (StreamWriter outputFile = new StreamWriter(Configuration.docPath))
+                {
+                    
+                    {
+                        //outputFile.WriteLine(product);
+                        //here we will store the produce.key which is the index and the produce.value which is the candy string name
+                        outputFile.WriteLine($"{product.Key}, {product.Value}");
+                    }
+                }
+                //output that the products are saved when end of list is reached
+                Console.WriteLine("Products saved");
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("There was an error saving products:" + ex.Message);
+            }
+        }
+
+        internal void UpdateProduct(string message)
+        {
+            Console.WriteLine(message);
+        }
+       
 
         //save data to file system
         void SaveProducts()
