@@ -1,8 +1,8 @@
 ﻿namespace MarysCandyShop
 {
-    internal class Helpers
+    internal static class Helpers
     {
-        int GetDaysSinceOpening()
+       internal static int GetDaysSinceOpening()
         {
             var openingDate = new DateTime(2023, 1, 1);
             TimeSpan timeDifference = DateTime.Now - openingDate;

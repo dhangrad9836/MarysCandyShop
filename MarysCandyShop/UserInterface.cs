@@ -35,7 +35,9 @@ namespace MarysCandyShop
                         productsController.DeleteProduct("User chose D");
                         break;
                     case "V":
-                        ViewProduct("User chose V");
+                        //below a list of will be returned from the GetProduct()
+                        var products = productsController.GetProduct();
+                        ViewProduct(products);  //this is a list of products that is being passed
                         break;
                     case "U":
                         productsController.UpdateProduct("User chose U");
@@ -45,11 +47,11 @@ namespace MarysCandyShop
                         //as we are quitting the program here
                         menuMessage = "Goodbue";
                         //call to SaveProducts() to save the data to file
-                        SaveProducts();
+                        //SaveProducts();
                         isMenuRunning = false;
                         break;
                     default:
-                        UpdateProduct("Invalid choice. Please choose one of the above.");
+                        productsController.UpdateProduct("Invalid choice. Please choose one of the above.");
                         break;
                 }//end switch statement
 
@@ -60,13 +62,14 @@ namespace MarysCandyShop
             }
         }
 
-        internal static void ViewProduct(string message)
+        internal static void ViewProduct(List<string> products)
         {
             Console.WriteLine(divide);
             foreach (var product in products)
             {
                 Console.WriteLine($"{product}");
             }
+            Console.WriteLine(divide);
         }
         internal static void PrintHeader()
         {
@@ -74,7 +77,7 @@ namespace MarysCandyShop
             var title = "Mary's Candy Shop";
             var divide = "---------------------------------";
             var dateTime = DateTime.Now;
-            var daysSinceOpening = GetDaysSinceOpening();
+            var daysSinceOpening = Helpers.GetDaysSinceOpening();
             var todaysProfit = 5.5m;
             var targetAchieved = false;
             var menu = GetMenu();   //call to the GetMenu()

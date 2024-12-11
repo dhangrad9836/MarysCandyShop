@@ -67,8 +67,37 @@ namespace MarysCandyShop
                     
                     {
                         //outputFile.WriteLine(product);
-                        //here we will store the produce.key which is the index and the produce.value which is the candy string name
-                        outputFile.WriteLine($"{product.Key}, {product.Value}");
+                        //here we will store the produce.key which is the index and the produce.value which is the candy string name, we also have a bool of true which will append to the file
+                        outputFile.WriteLine(product.Trim(), true);
+                    }
+                }
+                //output that the products are saved when end of list is reached
+                Console.WriteLine("Products saved");
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("There was an error saving products:" + ex.Message);
+            }
+        }
+
+        //second AddProduct with different signature take in a list of strings
+        internal void AddProduct(List<string> products)
+        {
+            //try/catch
+            try
+            {
+                //you will have to use the StreamWriter class in a using statement
+                using (StreamWriter outputFile = new StreamWriter(Configuration.docPath))
+                {
+
+                    {
+                        foreach(string product in products)
+                        {
+                            //here it will write a line to the text file
+                            outputFile.WriteLine(product.Trim());
+                        }
+                        
                     }
                 }
                 //output that the products are saved when end of list is reached
@@ -84,38 +113,9 @@ namespace MarysCandyShop
         internal void UpdateProduct(string message)
         {
             Console.WriteLine(message);
-        }
-       
+        }       
 
-        //save data to file system
-        void SaveProducts()
-        {
-            //try/catch
-            try
-            {
-                //you will have to use the StreamWriter class in a using statement
-                using (StreamWriter outputFile = new StreamWriter(Configuration.docPath))
-                {
-                    //use foreach loop to loop through the products list and store it in the outputFile 
-                    //note that we changed our foreach from a string to a var b/c we changed the List from string to a Dictionary which is now a key/value pair so the var picks up as a KeyValuePair, but we then changed to the actual data type KeyValuePair<int, string>
-                    foreach (KeyValuePair<int, string> product in products)
-                    {
-                        //outputFile.WriteLine(product);
-                        //here we will store the produce.key which is the index and the produce.value which is the candy string name
-                        outputFile.WriteLine($"{product.Key}, {product.Value}");
-                    }
-                }
-                //output that the products are saved when end of list is reached
-                Console.WriteLine("Products saved");
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine("There was an error saving products:" + ex.Message);
-                Console.WriteLine(divide);
-            }
-
-
-        }
+        
+        
     }//end ProductController()
 }
