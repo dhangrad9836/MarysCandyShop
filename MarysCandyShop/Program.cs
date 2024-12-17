@@ -3,6 +3,11 @@ using MarysCandyShop;
 
 UserInterface.RunMainMenu();
 
+//var product = new Product();
+
+//product.SetName("chocolate cake");
+//Console.WriteLine(product.GetName);
+
 
 
 //function call to SeedData to populate the products array my 
